@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Продукты</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/mainPageStyle.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Продукты</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Единица измерения</th>
+                        <th>Цена за единицу</th>
+                        <th>Количество</th>
+                        <th>Общая сумма</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in finishedgoods %}
+                    <tr>
+                        <td>{{ product.productid }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.unitid.unitname }}</td>
+                        <td>{{ product.unit_price }}</td>
+                        <td>{{ product.quantity }}</td>
+                        <td>{{ product.totalamount }}</td>
+                        <td>
+                            <a href="{% url 'finished_goods_update' product.productid %}" class="btn">Изменить</a>
+                            <a href="{% url 'finished_goods_delete' product.productid %}" class="btn btn-danger">Удалить</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7">Нет данных</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'finished_goods_create' %}" class="btn btn-primary">Добавить продукт</a>
+            <a href="{% url 'home' %}" class="btn btn-primary">На главную страницу</a>
+
+
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if rawmaterial %}Редактировать сырьё{% else %}Добавить сырьё{% endif %}</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/rawmaterialsStyle.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>{% if rawmaterial %}Редактировать сырьё{% else %}Добавить сырьё{% endif %}</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn submit-btn">{% if rawmaterial %}Сохранить изменения{% else %}Добавить сырьё{% endif %}</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление Сэндвичами</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/mainPageStyle.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Панель управления</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Раздел</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Сырьё</td>
+                        <td><a href="{% url 'rawmaterials_list' %}" class="btn">Открыть</a></td>
+                    </tr>
+                    <tr>
+                        <td>Продукты</td>
+                        <td><a href="{% url 'finishedgoods_list' %}" class="btn">Открыть</a></td>
+                    </tr>
+                    <tr>
+                        <td>Единицы измерения</td>
+                        <td><a href="{% url 'units_list' %}" class="btn">Открыть</a></td>
+                    </tr>
+                    <tr>
+                        <td>Ингредиенты</td>
+                        <td><a href="{% url 'ingredients_list' %}" class="btn">Открыть</a></td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

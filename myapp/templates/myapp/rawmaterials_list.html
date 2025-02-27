@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сырьё</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/rawmaterialsStyle.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Сырьё</h1>
+        <a href="{% url 'raw_material_create' %}" class="btn add-btn">Добавить новое сырьё</a>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название</th>
+                        <th>Единица измерения</th>
+                        <th>Цена за единицу</th>
+                        <th>Количество</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rawmaterial in rawmaterials %}
+                    <tr>
+                        <td>{{ rawmaterial.name }}</td>
+                        <td>{{ rawmaterial.unitid.unitname }}</td>
+                        <td>{{ rawmaterial.unit_price }}</td>
+                        <td>{{ rawmaterial.quantity }}</td>
+                        <td>
+                            <a href="{% url 'raw_material_update' pk=rawmaterial.pk %}" class="btn edit-btn">Редактировать</a>
+                            <a href="{% url 'raw_material_delete' pk=rawmaterial.pk %}" class="btn delete-btn">Удалить</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'home' %}" class="btn btn-primary">На главную страницу</a>
+        </div>
+    </div>
+</body>
+</html>

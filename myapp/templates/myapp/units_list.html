@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление Единицами Измерения</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/mainPageStyle.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Единицы измерения</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+
+                        <th>Название</th> <!-- Столбец для Названия -->
+                        <th>Действие</th> <!-- Столбец для Действий -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for unit in units %}
+                    <tr>
+
+                        <td>{{ unit.unitname }}</td>
+                        <td>
+                            <a href="{% url 'unit_update' unit.pk %}" class="btn">Изменить</a>
+                            <a href="{% url 'unit_delete' unit.pk %}" class="btn btn-danger">Удалить</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">Нет данных</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{% url 'unit_create' %}" class="btn btn-primary">Добавить единицу измерения</a>
+            <a href="{% url 'home' %}" class="btn btn-primary">На главную страницу</a>
+        </div>
+    </div>
+</body>
+</html>

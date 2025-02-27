@@ -1,0 +1,124 @@
+/* Основные стили */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Кнопки */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.add-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.edit-btn {
+    background-color: #2196F3;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.submit-btn {
+    background-color: #4CAF50;
+    color: white;
+    width: 100%;
+}
+
+.cancel-btn {
+    background-color: #ccc;
+    color: black;
+}
+
+/* Таблицы */
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f4f7fc;
+    font-weight: bold;
+}
+
+/* Формы */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input, form select {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+form button {
+    padding: 12px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    .btn {
+        font-size: 14px;
+    }
+}
