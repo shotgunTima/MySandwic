@@ -1,21 +1,38 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Подтвердить удаление</title>
-    <link rel="stylesheet" href="{% static 'myapp/css/mainPageStyle.css' %}">
+    <title>Подтверждение удаления продукта</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
+
 </head>
 <body>
-    <div class="container">
-        <h1>Подтверждение удаления</h1>
-        <p>Вы уверены, что хотите удалить продукт "{{ finishedgood.name }}"?</p>
-        <form method="POST">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Удалить</button>
-        </form>
-        <a href="{% url 'finishedgoods_list' %}" class="btn btn-secondary">Отменить</a>
-    </div>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="/" class="logo">MyApp</a>
+                <ul>
+                    <li><a href="{% url 'myapp:rawmaterials_list' %}">Сырьё</a></li>
+                    <li><a href="{% url 'myapp:finishedgoods_list' %}">Готовая продукция</a></li>
+                    <li><a href="{% url 'myapp:units_list' %}">Единицы измерения</a></li>
+                    <li><a href="{% url 'myapp:ingredients_list' %}">Ингредиенты</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>Вы уверены, что хотите удалить продукт "{{ finishedgood.name }}"?</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Удалить</button>
+                <a href="{% url 'myapp:finishedgoods_list' %}" class="btn btn-secondary">Отмена</a>
+            </form>
+        </div>
+    </main>
 </body>
 </html>

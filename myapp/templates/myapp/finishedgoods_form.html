@@ -1,21 +1,54 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Добавить продукт</title>
-    <link rel="stylesheet" href="{% static 'myapp/css/mainPageStyle.css' %}">
+    <title>{% block title %}Создание/Редактирование готовой продукции{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h1>Добавить новый продукт</h1>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Сохранить</button>
-        </form>
-        <a href="{% url 'finishedgoods_list' %}" class="btn btn-secondary">Назад</a>
-    </div>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="/" class="logo">MyApp</a>
+                <ul>
+                    <li><a href="{% url 'myapp:rawmaterials_list' %}">Сырьё</a></li>
+                    <li><a href="{% url 'myapp:finishedgoods_list' %}">Готовая продукция</a></li>
+                    <li><a href="{% url 'myapp:units_list' %}">Единицы измерения</a></li>
+                    <li><a href="{% url 'myapp:ingredients_list' %}">Ингредиенты</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>{% if form.instance.pk %}Редактировать продукт{% else %}Добавить новый продукт{% endif %}</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_name">Название сырья:</label>
+                    {{ form.name }}
+                </div>
+                <div class="form-group">
+                    <label for="id_unit_price">Цена за единицу:</label>
+                    {{ form.unit_price }}
+                </div>
+                <div class="form-group">
+                    <label for="id_quantity">Количество:</label>
+                    {{ form.quantity }}
+                </div>
+                <div class="form-group">
+                    <label for="id_totalamount">Общая сумма:</label>
+                    <input type="text" id="id_totalamount" value="{{ form.instance.totalamount }}" readonly>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    {% if form.instance.pk %}Сохранить изменения{% else %}Создать сырьё{% endif %}
+                </button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>

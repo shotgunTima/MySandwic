@@ -1,0 +1,198 @@
+/* Основные стили для всей страницы */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Общие стили для body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f3e8; /* Светлый пастельный фон */
+    color: #4a4a4a; /* Темно-серый цвет текста */
+    line-height: 1.6;
+}
+
+/* Навигация */
+.navbar {
+    background-color: #f2d9b1; /* Теплый пастельный желтый */
+    padding: 15px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    font-size: 24px;
+    color: #5d4037; /* Темно-коричневый для логотипа */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+}
+
+.navbar ul li {
+    margin: 0 15px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: #5d4037;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.navbar ul li a:hover {
+    color: #d69f3d; /* Пастельный желтый для hover */
+}
+
+/* Основной контент */
+.main-content {
+    padding: 40px 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Формы */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #6d4c41; /* Теплый коричневый оттенок */
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #d69f3d; /* Пастельный желтый при фокусе */
+    outline: none;
+}
+
+/* Кнопки */
+button {
+    background-color: #d69f3d; /* Пастельный желтый */
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #c6842d; /* Темнее пастельный желтый при наведении */
+}
+
+/* Шапка и футер */
+header {
+    background-color: #f2d9b1;
+}
+
+footer {
+    background-color: #f8f3e8;
+    padding: 20px 0;
+    text-align: center;
+    color: #6d4c41;
+}
+
+/* Для таблиц */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2d9b1; /* Пастельный желтый */
+    color: #6d4c41;
+}
+
+/* Добавление отступов и шрифтов для блоков */
+h1,
+h2,
+h3 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #5d4037;
+}
+
+h1 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+footer {
+    font-size: 14px;
+    color: #6d4c41;
+    margin-top: 30px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .navbar .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar ul {
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    .navbar ul li {
+        margin-bottom: 10px;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .container {
+        width: 90%;
+    }
+}

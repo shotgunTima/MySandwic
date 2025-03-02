@@ -1,21 +1,41 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Добавить Единицу Измерения</title>
-    <link rel="stylesheet" href="{% static 'myapp/css/mainPageStyle.css' %}">
+    <title>{% block title %}Создание/Редактирование единицы измерения{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
+
 </head>
 <body>
-    <div class="container">
-        <h1>Добавить единицу измерения</h1>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-success">Добавить</button>
-            <a href="{% url 'units_list' %}" class="btn btn-secondary">Отменить</a>
-        </form>
-    </div>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="/" class="logo">MyApp</a>
+                <ul>
+                    <li><a href="{% url 'myapp:rawmaterials_list' %}">Сырьё</a></li>
+                    <li><a href="{% url 'myapp:finishedgoods_list' %}">Готовая продукция</a></li>
+                    <li><a href="{% url 'myapp:units_list' %}">Единицы измерения</a></li>
+                    <li><a href="{% url 'myapp:ingredients_list' %}">Ингредиенты</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <h1>{% if form.instance.pk %}Редактировать единицу{% else %}Добавить единицу измерения{% endif %}</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_unitname">Название единицы:</label>
+                    {{ form.unitname }}
+                </div>
+                <button type="submit" class="btn btn-primary">{% if form.instance.pk %}Сохранить изменения{% else %}Создать единицу{% endif %}</button>
+            </form>
+        </div>
+    </main>
 </body>
 </html>

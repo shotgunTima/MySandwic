@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Подтверждение удаления сырья</title>
+    <title>Подтверждение удаления ингредиента</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
-
 </head>
 <body>
     <header>
@@ -23,14 +22,14 @@
         </nav>
     </header>
 
-    <main class="main-content">
+    <main>
         <div class="container">
-            <h1>Вы уверены, что хотите удалить сырьё "{{ rawmaterial.name }}"?</h1>
-
+            <h1>Вы уверены, что хотите удалить ингредиент?</h1>
+            <p>Ингредиент: {{ ingredient.productid.name }} - {{ ingredient.rawmaterialid.name }}</p>
             <form method="POST">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Удалить</button>
-                <a href="{% url 'myapp:rawmaterials_list' %}" class="btn btn-secondary">Отмена</a>
+                <a href="{% url 'myapp:ingredients_list' %}" class="btn btn-secondary">Отменить</a>
             </form>
         </div>
     </main>

@@ -1,30 +1,47 @@
-
-from datetime import date
-
 from django import forms
+from myapp.models import Rawmaterials, Finishedgoods, Units, Ingredients
 from django.core.exceptions import ValidationError
-from django.utils import timezone
-from myapp.models import *
 
+
+# Форма для сырья
 class RawmaterialsForm(forms.ModelForm):
     class Meta:
         model = Rawmaterials
-        exclude = ['quantity', 'totalamount']
+        exclude = ['totalamount']
 
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # Расчет общей суммы
+        if instance.unit_price and instance.quantity:
+            instance.totalamount = instance.unit_price * instance.quantity
+        if commit:
+            instance.save()
+        return instance
+
+
+# Форма для готовой продукции
 class FinishedgoodsForm(forms.ModelForm):
     class Meta:
         model = Finishedgoods
-        exclude = ['quantity', 'totalamount']
+        exclude = ['totalamount']
 
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        # Расчет общей суммы
+        if instance.unit_price and instance.quantity:
+            instance.totalamount = instance.unit_price * instance.quantity
+        if commit:
+            instance.save()
+        return instance
+
+
+# Форма для единиц измерения
 class UnitsForm(forms.ModelForm):
     class Meta:
         model = Units
         fields = '__all__'
 
-from django import forms
-from .models import Ingredients
-
-
+# Форма для ингредиентов
 class IngredientsForm(forms.ModelForm):
     class Meta:
         model = Ingredients
@@ -36,3 +53,12 @@ class IngredientsForm(forms.ModelForm):
         if product_id:
             self.fields['productid'].initial = product_id
             self.fields['productid'].widget.attrs['readonly'] = True
+        # Вы можете также добавить custom validation для quantity, если нужно
+        self.fields['quantity'].widget.attrs.update({'min': 1})
+
+    # Пример валидации для quantity (можно изменить по необходимости)
+    def clean_quantity(self):
+        quantity = self.cleaned_data.get('quantity')
+        if quantity <= 0:
+            raise ValidationError("Количество должно быть больше 0.")
+        return quantity

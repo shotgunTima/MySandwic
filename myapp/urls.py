@@ -1,8 +1,13 @@
 
 from django.urls import path, include
 from myapp.views import *
+
+app_name = 'myapp'
+
 urlpatterns = [
+
     path('', home_page, name='home'),
+
 
     # Raw Materials
     path('rawmaterials/', raw_materials_list, name='rawmaterials_list'),
