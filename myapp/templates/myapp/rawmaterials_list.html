@@ -6,13 +6,83 @@
     <title>Сырьё</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
+    <style>
+        .sandwich-table-container {
+            width: 80%;
+            margin: 50px auto;
+            position: relative;
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
 
+
+        .sandwich-table-container::before {
+            content: "";
+            background-image: url("{% static 'myapp/img/sandwichTop.png' %}");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 130px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+
+        .sandwich-table-container::after {
+            content: "";
+            background-image: url("{% static 'myapp/img/sandwichBottom.png' %}");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: absolute;
+            bottom: 73px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 40px;
+            z-index: 3;
+            pointer-events: none;
+
+        }
+
+
+        .table {
+            width: 100%;
+            border: 5px solid rgba(40, 40, 39, 1);
+            background-color: rgba(40, 40, 39, 1);
+            position: relative;
+            z-index: 2;
+
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table td {
+         background-color: #fff;
+            padding: 25px;
+            text-align: center;
+        }
+        .table th{
+        padding: 25px;
+        text-align: center;
+        }
+
+        .table th {
+            background-color: #f2d9b1;
+            color: #6d4c41;
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar">
             <div class="container">
-                <a href="/" class="logo">MyApp</a>
+                <a href="/" class="logo">MySandwic</a>
                 <ul>
                     <li><a href="{% url 'myapp:rawmaterials_list' %}">Сырьё</a></li>
                     <li><a href="{% url 'myapp:finishedgoods_list' %}">Готовая продукция</a></li>
@@ -22,11 +92,10 @@
             </div>
         </nav>
     </header>
-
+    <a href="{% url 'myapp:raw_material_create' %}" class="btn add-btn"> title="Добавить">➕</a>
     <main class="main-content">
-        <div class="container">
-            <h1>Список сырья</h1>
-            <a href="{% url 'myapp:raw_material_create' %}" class="btn btn-primary">Добавить новое сырьё</a>
+        <h1>Список сырья</h1>
+        <div class="container sandwich-table-container">
             <table class="table">
                 <thead>
                     <tr>
@@ -47,13 +116,16 @@
                         <td>{{ rawmaterial.quantity }}</td>
                         <td>{{ rawmaterial.totalamount }}</td>
                         <td>
-                            <a href="{% url 'myapp:raw_material_update' rawmaterial.pk %}" class="btn btn-warning">Редактировать</a>
-                            <a href="{% url 'myapp:raw_material_delete' rawmaterial.pk %}" class="btn btn-danger">Удалить</a>
+                            <a href="{% url 'myapp:raw_material_create' %}" class="btn btn-primary" title="Добавить">➕</a>
+                            <a href="{% url 'myapp:raw_material_update' rawmaterial.pk %}" class="btn btn-warning" title="Изменить">✏️</a>
+                            <a href="{% url 'myapp:raw_material_delete' rawmaterial.pk %}" class="btn btn-danger"
+                            title="Удалить">🗑️</a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+
 
             <div class="pagination">
                 <span class="prev">

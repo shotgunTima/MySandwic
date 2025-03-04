@@ -12,7 +12,7 @@
     <header>
         <nav class="navbar">
             <div class="container">
-                <a href="/" class="logo">MyApp</a>
+                <a href="/" class="logo">MySandwic</a>
                 <ul>
                     <li><a href="{% url 'myapp:rawmaterials_list' %}">Сырьё</a></li>
                     <li><a href="{% url 'myapp:finishedgoods_list' %}">Готовая продукция</a></li>
@@ -30,7 +30,7 @@
             <form method="POST">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Удалить</button>
-                <a href="{% url 'myapp:rawmaterials_list' %}" class="btn btn-secondary">Отмена</a>
+                <button class="cancelButton"><a href="{% url 'myapp:rawmaterials_list' %}" class="btn btn-secondary">Отмена</a></button>
             </form>
         </div>
     </main>

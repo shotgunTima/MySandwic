@@ -119,6 +119,17 @@ button:hover {
     background-color: #c6842d; /* Темнее пастельный желтый при наведении */
 }
 
+.cancelButton{
+    background-color: rgba(238, 91, 39, 1);
+    color: #fff;
+}
+.cancelButton:hover{
+    background-color: rgba(189, 78, 39, 1);
+}
+.cancelButton a{
+    color: #fff;
+}
+
 /* Шапка и футер */
 header {
     background-color: #f2d9b1;
@@ -131,24 +142,6 @@ footer {
     color: #6d4c41;
 }
 
-/* Для таблиц */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
-}
-
-th,
-td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    background-color: #f2d9b1; /* Пастельный желтый */
-    color: #6d4c41;
-}
 
 /* Добавление отступов и шрифтов для блоков */
 h1,
@@ -196,3 +189,22 @@ footer {
         width: 90%;
     }
 }
+
+a{
+    text-decoration: none;
+}
+
+
+
+/* Контейнер для таблицы */
+.sandwich-table-container {
+    width: 80%;
+    margin: 50px auto;
+    position: relative;
+}
+
+
+
+
+
+

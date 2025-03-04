@@ -11,7 +11,7 @@
     <header>
         <nav class="navbar">
             <div class="container">
-                <a href="/" class="logo">MyApp</a>
+                <a href="/" class="logo">MySandwic</a>
                 <ul>
                     <li><a href="{% url 'myapp:rawmaterials_list' %}">Сырьё</a></li>
                     <li><a href="{% url 'myapp:finishedgoods_list' %}">Готовая продукция</a></li>
@@ -41,14 +41,15 @@
                         <td>{{ ingredient.rawmaterialid.name }}</td>
                         <td>{{ ingredient.quantity }}</td>
                         <td>
-                            <a href="{% url 'myapp:ingredient_update' pk=ingredient.pk %}">Редактировать</a> |
-                            <a href="{% url 'myapp:ingredient_delete' pk=ingredient.pk %}">Удалить</a>
+                            <a href="{% url 'myapp:ingredient_create' product_id=1 %}">➕</a>
+                            <a href="{% url 'myapp:ingredient_update' pk=ingredient.pk %}">✏️</a> |
+                            <a href="{% url 'myapp:ingredient_delete' pk=ingredient.pk %}">🗑️</a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{% url 'myapp:ingredient_create' product_id=1 %}">Добавить новый ингредиент</a>
+
         </div>
     </main>
 </body>
