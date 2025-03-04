@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% if rawmaterial %}Редактировать сырьё{% else %}Добавить сырьё{% endif %}</title>
-    <link rel="stylesheet" href="{% static 'myapp/css/rawmaterialsStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
 </head>
 <body>
     <div class="container">
@@ -14,6 +14,7 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn submit-btn">{% if rawmaterial %}Сохранить изменения{% else %}Добавить сырьё{% endif %}</button>
+            <button class="cancelButton"><a href="{% url 'rawmaterials_list' %}">Отмена</a></button>
         </form>
     </div>
 </body>

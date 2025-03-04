@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Добавить Единицу Измерения</title>
-    <link rel="stylesheet" href="{% static 'myapp/css/mainPageStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
 </head>
 <body>
     <div class="container">
@@ -14,7 +14,7 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-success">Добавить</button>
-            <a href="{% url 'units_list' %}" class="btn btn-secondary">Отменить</a>
+            <button class="cancelButton"><a href="{% url 'units_list' %}" class="btn btn-secondary">Отменить</a></button>
         </form>
     </div>
 </body>

@@ -5,40 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Управление Сэндвичами</title>
-    <link rel="stylesheet" href="{% static 'myapp/css/mainPageStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
 </head>
 <body>
-    <div class="container">
-        <h1>Панель управления</h1>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Раздел</th>
-                        <th>Действие</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Сырьё</td>
-                        <td><a href="{% url 'rawmaterials_list' %}" class="btn">Открыть</a></td>
-                    </tr>
-                    <tr>
-                        <td>Продукты</td>
-                        <td><a href="{% url 'finishedgoods_list' %}" class="btn">Открыть</a></td>
-                    </tr>
-                    <tr>
-                        <td>Единицы измерения</td>
-                        <td><a href="{% url 'units_list' %}" class="btn">Открыть</a></td>
-                    </tr>
-                    <tr>
-                        <td>Ингредиенты</td>
-                        <td><a href="{% url 'ingredients_list' %}" class="btn">Открыть</a></td>
-                    </tr>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="/" class="logo">MySandwich</a>
+                <ul>
+                    <li><a href="{% url 'finishedgoods_list' %}">Готовая продукция</a></li>
+                    <li><a href="{% url 'rawmaterials_list' %}">Сырьё</a></li>
+                    <li><a href="{% url 'ingredients_list' %}">Ингредиенты</a></li>
+                    <li><a href="{% url 'units_list' %}">Единицы измерения</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="ololo">
 
-                </tbody>
-            </table>
-        </div>
+            <h3 class="mainh3">Выберите нужный раздел для работы с данными...</h3><h2>⮵</h2>
     </div>
+    <footer>
+        <p>&copy; 2025 MySandwich. Все права защищены.</p>
+    </footer>
 </body>
 </html>

@@ -1,0 +1,273 @@
+/* Основные стили для всей страницы */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Общие стили для body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f3e8;
+    color: #4a4a4a;
+    line-height: 1.6;
+}
+
+
+.navbar {
+    background-color: #f2d9b1;
+    padding: 15px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .logo {
+    font-size: 24px;
+    color: #5d4037;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+}
+
+.navbar ul li {
+    margin: 0 15px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: #5d4037;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.navbar ul li a:hover {
+    color: #d69f3d;
+}
+
+/* Основной контент */
+.main-content {
+    padding: 40px 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.table-container{
+    margin-top: -60px;
+
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Формы */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #6d4c41; /* Теплый коричневый оттенок */
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #d69f3d; /* Пастельный желтый при фокусе */
+    outline: none;
+}
+
+/* Кнопки */
+button {
+    background-color: #d69f3d; /* Пастельный желтый */
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top:20px;
+}
+
+button:hover {
+    background-color: #c6842d; /* Темнее пастельный желтый при наведении */
+}
+
+.cancelButton{
+    background-color: rgba(238, 91, 39, 1);
+    color: #fff;
+}
+.cancelButton:hover{
+    background-color: rgba(189, 78, 39, 1);
+}
+.cancelButton a{
+    color: #fff;
+}
+
+
+/* Шапка и футер */
+header {
+    background-color: #f2d9b1;
+}
+
+footer {
+    background-color: #f8f3e8;
+    padding: 20px 0;
+    text-align: center;
+    color: #6d4c41;
+}
+
+
+/* Добавление отступов и шрифтов для блоков */
+h1,
+h3 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #5d4037;
+}
+h2{
+    font-size: 50px;
+    margin-bottom: 20px;
+    color:rgba(93, 64, 55, 0.80);
+    margin-top:40px;
+}
+
+.ololo {
+    display: flex;
+    align-items: center;
+
+}
+
+
+.mainh3{
+    color:rgba(93, 64, 55, 0.80);
+    margin-left:170px;
+    margin-top:50px;
+}
+
+h1 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 40px;
+}
+
+.titleTbl{
+    font-size: 80px;
+    color:rgba(93, 64, 55, 0.40);
+    margin-top: -30px;
+    margin-left: 100px;
+    margin-bottom: -170px;
+}
+
+
+
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #6d4c41;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+}
+
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .navbar .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar ul {
+        flex-direction: column;
+        margin-top: 20px;
+    }
+
+    .navbar ul li {
+        margin-bottom: 10px;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .container {
+        width: 90%;
+    }
+}
+
+a{
+    text-decoration: none;
+}
+
+
+
+/* Контейнер для таблицы */
+.sandwich-table-container {
+    width: 80%;
+    margin: 50px auto;
+    position: relative;
+}
+
+.add-btn-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+
+}
+
+.add-btn {
+    background-color: #FFFFFF;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 18px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-btn:hover {
+    background-color: #FFEEE3;
+}
+
+td a{
+    font-size: 25px;
+}
+
+

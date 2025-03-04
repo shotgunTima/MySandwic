@@ -9,12 +9,12 @@
 </head>
 <body>
     <div class="container">
-        <h1>Подтверждение удаления единицы измерения</h1>
-        <p>Вы уверены, что хотите удалить единицу измерения "{{ unit.unitname }}"?</p>
+        <h1>Подтверждение удаления ингредиента</h1>
+        <p>Вы уверены, что хотите удалить ингредиент <b>"{{ ingredient.rawmaterialid.name }}"</b> для продукта <b>"{{ ingredient.productid.name }}"</b>?</p>
         <form method="POST">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Удалить</button>
-            <button class="cancelButton"><a href="{% url 'units_list' %}" class="btn btn-secondary">Отменить</a></button>
+            <button class="cancelButton"><a href="{% url 'ingredients_list' %}" class="btn btn-secondary">Отменить</a></button>
         </form>
     </div>
 </body>

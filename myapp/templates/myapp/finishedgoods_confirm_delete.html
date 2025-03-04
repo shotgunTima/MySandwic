@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Подтвердить удаление</title>
-    <link rel="stylesheet" href="{% static 'myapp/css/mainPageStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
 </head>
 <body>
     <div class="container">
@@ -14,8 +14,8 @@
         <form method="POST">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Удалить</button>
+            <button class="cancelButton"><a href="{% url 'finishedgoods_list' %}" class="btn btn-secondary">Отменить</a></button>
         </form>
-        <a href="{% url 'finishedgoods_list' %}" class="btn btn-secondary">Отменить</a>
     </div>
 </body>
 </html>

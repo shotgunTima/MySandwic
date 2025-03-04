@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить/Редактировать Ингредиент</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>{% if form.instance.pk %}Редактировать ингредиент{% else %}Добавить ингредиент{% endif %}</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Сохранить</button>
+            <button class="cancelButton"><a href="{% url 'ingredients_list' %}" class="btn btn-secondary">Отменить</a></button>
+        </form>
+    </div>
+</body>
+</html>

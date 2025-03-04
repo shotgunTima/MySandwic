@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Добавить продукт</title>
-    <link rel="stylesheet" href="{% static 'myapp/css/mainPageStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
 </head>
 <body>
     <div class="container">
@@ -14,8 +14,8 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Сохранить</button>
+            <button class="cancelButton"><a href="{% url 'finishedgoods_list' %}" class="btn btn-secondary">Назад</a></button>
         </form>
-        <a href="{% url 'finishedgoods_list' %}" class="btn btn-secondary">Назад</a>
     </div>
 </body>
 </html>

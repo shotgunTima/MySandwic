@@ -10,16 +10,31 @@ class RawmaterialsForm(forms.ModelForm):
     class Meta:
         model = Rawmaterials
         exclude = ['quantity', 'totalamount']
+        fields = ['name', 'unitid', 'unit_price']
+        labels = {
+            'name': 'Название',
+            'unitid': 'Единица измерения',
+            'unit_price': 'Цена за единицу',
+        }
 
 class FinishedgoodsForm(forms.ModelForm):
     class Meta:
         model = Finishedgoods
         exclude = ['quantity', 'totalamount']
+        fields = ['name', 'unitid', 'unit_price']
+        labels = {
+            'name': 'Название',
+            'unitid': 'Единица измерения',
+            'unit_price': 'Цена за единицу',
+        }
 
 class UnitsForm(forms.ModelForm):
     class Meta:
         model = Units
         fields = '__all__'
+        labels = {
+            'unitname': 'Название единицы измерения',
+        }
 
 from django import forms
 from .models import Ingredients
@@ -29,6 +44,11 @@ class IngredientsForm(forms.ModelForm):
     class Meta:
         model = Ingredients
         fields = ['productid', 'rawmaterialid', 'quantity']
+        labels = {
+            'productid': 'Продукт',
+            'rawmaterialid': 'Сырьё',
+            'quantity': 'Количество',
+        }
 
     def __init__(self, *args, **kwargs):
         product_id = kwargs.pop('product_id', None)

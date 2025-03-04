@@ -4,51 +4,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Продукты</title>
-    <link rel="stylesheet" href="{% static 'myapp/css/mainPageStyle.css' %}">
+    <title>Готовая продукция</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
+    <style>
+        .sandwich-table-container {
+            width: 80%;
+            margin: 50px auto;
+            position: relative;
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
+
+        .sandwich-table-container::before {
+            content: "";
+            background-image: url("{% static 'myapp/img/sandwichTop.png' %}");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: absolute;
+            top: 42px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 130px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .sandwich-table-container::after {
+            content: "";
+            background-image: url("{% static 'myapp/img/sandwichBottom.png' %}");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: absolute;
+            bottom: 74px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 40px;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .table {
+            width: 100%;
+            border: 3px solid rgba(40, 40, 39, 1);
+            background-color: rgba(40, 40, 39, 1);
+            position: relative;
+            z-index: 2;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table td, .table th {
+            background-color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: #f2d9b1;
+            color: #6d4c41;
+        }
+
+        .add-btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .add-btn {
+            background-color: #FFFFFF;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-btn:hover {
+            background-color: #FFEEE3;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Продукты</h1>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Название</th>
-                        <th>Единица измерения</th>
-                        <th>Цена за единицу</th>
-                        <th>Количество</th>
-                        <th>Общая сумма</th>
-                        <th>Действие</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for product in finishedgoods %}
-                    <tr>
-                        <td>{{ product.productid }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.unitid.unitname }}</td>
-                        <td>{{ product.unit_price }}</td>
-                        <td>{{ product.quantity }}</td>
-                        <td>{{ product.totalamount }}</td>
-                        <td>
-                            <a href="{% url 'finished_goods_update' product.productid %}" class="btn">Изменить</a>
-                            <a href="{% url 'finished_goods_delete' product.productid %}" class="btn btn-danger">Удалить</a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="7">Нет данных</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <a href="{% url 'finished_goods_create' %}" class="btn btn-primary">Добавить продукт</a>
-            <a href="{% url 'home' %}" class="btn btn-primary">На главную страницу</a>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="/" class="logo">MySandwich</a>
+                <ul>
+                    <li><a href="{% url 'finishedgoods_list' %}">Готовая продукция</a></li>
+                    <li><a href="{% url 'rawmaterials_list' %}">Сырьё</a></li>
+                    <li><a href="{% url 'ingredients_list' %}">Ингредиенты</a></li>
+                    <li><a href="{% url 'units_list' %}">Единицы измерения</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
 
+    <main class="main-content">
+        <div class="container">
+            <h5 class="titleTbl">Готовая продукция</h5>
+
+            <div class="table-container">
+                <div class="sandwich-table-container">
+                    <div class="add-btn-container">
+                        <a href="{% url 'finished_goods_create' %}" class="btn add-btn" title="Добавить">➕</a>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+
+                                <th>Название</th>
+                                <th>Единица измерения</th>
+                                <th>Цена за единицу</th>
+                                <th>Количество</th>
+                                <th>Общая сумма</th>
+                                <th>Ингредиенты</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in finishedgoods %}
+                            <tr>
+
+                                <td>{{ product.name }}</td>
+                                <td>{{ product.unitid.unitname }}</td>
+                                <td>{{ product.unit_price }}</td>
+                                <td>{{ product.quantity }}</td>
+                                <td>{{ product.totalamount }}</td>
+                                <td><a href="{% url 'finished_goods_update' product.productid %}" class="btn edit-btn" title="Посмотреть ингредиенты">👁️</a></td>
+                                <td>
+                                    <a href="{% url 'finished_goods_update' product.productid %}" class="btn edit-btn" title="Редактировать">✏️</a>
+                                    <a href="{% url 'finished_goods_delete' product.productid %}" class="btn delete-btn" title="Удалить">🗑️</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7">Нет данных</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
         </div>
-    </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 MySandwich. Все права защищены.</p>
+    </footer>
 </body>
 </html>
