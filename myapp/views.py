@@ -108,9 +108,21 @@ def unit_delete(request, pk):
         return redirect('units_list')
     return render(request, 'myapp/unit_confirm_delete.html', {'unit': unit})
 
+from itertools import groupby
+from django.shortcuts import render
+from .models import Ingredients
+
 def ingredient_list(request):
-    ingredients = Ingredients.objects.all()
-    return render(request, 'myapp/ingredients_list.html', {'ingredients': ingredients})
+
+    ingredients = Ingredients.objects.select_related("productid", "rawmaterialid").order_by("productid")
+
+
+    grouped_ingredients = {}
+    for product, items in groupby(ingredients, key=lambda x: x.productid):
+        grouped_ingredients[product] = list(items)
+
+    return render(request, 'myapp/ingredients_list.html', {'grouped_ingredients': grouped_ingredients})
+
 
 def ingredient_create(request, product_id):
     product = get_object_or_404(Finishedgoods, pk=product_id)
@@ -121,12 +133,12 @@ def ingredient_create(request, product_id):
             raw_material = form.cleaned_data['rawmaterialid']
             # Check if the ingredient already exists for this product
             if Ingredients.objects.filter(productid=product, rawmaterialid=raw_material).exists():
-                messages.error(request, 'This ingredient has already been added to the product.')
+                messages.error(request, 'Данный  ингредиент уже есть.')
             else:
                 form.save()
                 return redirect('product_ingredients', product_id=product_id)
         else:
-            messages.error(request, 'Please fix the form errors.')
+            messages.error(request, 'В форме есть ошибки, исправь.')
 
     else:
         form = IngredientsForm(product_id=product_id)
