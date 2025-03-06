@@ -14,7 +14,7 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Сохранить</button>
-            <button class="cancelButton"><a href="{% url 'product_ingredients' product.productid %}" class="btn btn-secondary">Назад</a></button>
+            <button class="cancelButton"><a href="{% url 'ingredients_list'  %}">Назад</a></button>
         </form>
     </div>
 </body>

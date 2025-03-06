@@ -76,6 +76,9 @@
             background-color: #f2d9b1;
             color: #6d4c41;
         }
+        .add-btn-container a{
+        margin-right: 9px;
+        }
     </style>
 </head>
 <body>
@@ -100,14 +103,16 @@
         <div class="table-container">
             <div class="sandwich-table-container">
                 <div class="add-btn-container">
-            <a href="{% url 'raw_material_create' %}" class="btn add-btn" title="Добавить">➕</a>
-        </div>
+                    <a href="{% url 'raw_material_create' %}" class="btn add-btn" title="Добавить">➕</a>
+                    <a href="{% url 'purchase_raw_materials' %}" class="btn add-btn" title="Закупить сырьё">🛒</a>
+                </div>
+
                 <table class="table">
                     <thead>
                         <tr>
                             <th>Название</th>
-                            <th>Цена за единицу</th>
                             <th>Количество</th>
+                            <th>Общая цена</th>
                             <th>Единица измерения</th>
                             <th>Действия</th>
                         </tr>
@@ -116,8 +121,8 @@
                         {% for rawmaterial in rawmaterials %}
                         <tr>
                             <td>{{ rawmaterial.name }}</td>
-                            <td>{{ rawmaterial.unit_price }}</td>
                             <td>{{ rawmaterial.quantity }}</td>
+                            <td>{{ rawmaterial.totalamount }}</td>
                             <td>{{ rawmaterial.unitid.unitname }}</td>
                             <td>
                                 <a href="{% url 'raw_material_update' pk=rawmaterial.pk %}" class="btn edit-btn" title="Редактировать">✏️</a>
@@ -127,8 +132,9 @@
                         {% endfor %}
                     </tbody>
                 </table>
-            </div>
+                </div>
         </div>
+
     </div>
 </main>
 <footer>

@@ -28,4 +28,14 @@ urlpatterns = [
     path('ingredients/<int:pk>/update/', ingredient_update, name='ingredient_update'),
     path('ingredients/<int:pk>/delete/', ingredient_delete, name='ingredient_delete'),
     path('product/<int:product_id>/ingredients/', product_ingredients, name='product_ingredients'),
+
+    #
+    path('purchase/', purchase_raw_material, name='purchase_raw_materials'),
+
+    path('employees/', employee_list, name='employee_list'),  # List employees
+    path('employees/create/', employee_create, name='employee_create'),  # Create employee
+    path('employees/<int:pk>/edit/', employee_update, name='employee_update'),  # Update employee
+    path('employees/<int:pk>/delete/', employee_delete, name='employee_delete'),  # Delete employee
+
+    path('budget/', budget_edit, name='budget_edit'),
 ]

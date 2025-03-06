@@ -13,7 +13,11 @@
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="btn submit-btn">{% if rawmaterial %}Сохранить изменения{% else %}Добавить сырьё{% endif %}</button>
+            {% if rawmaterial %}
+            <button type="submit" class="btn submit-btn">Сохранить изменения</button>
+            {% else %}
+            <button type="submit" class="btn submit-btn">Добавить сырьё</button>
+            {% endif %}
             <button class="cancelButton"><a href="{% url 'rawmaterials_list' %}">Отмена</a></button>
         </form>
     </div>

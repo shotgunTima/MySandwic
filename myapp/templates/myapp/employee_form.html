@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form.instance.pk %}Редактировать{% else %}Добавить{% endif %} сотрудника</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>{% if form.instance.pk %}Редактировать{% else %}Добавить{% endif %} сотрудника</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">{% if form.instance.pk %}Сохранить{% else %}Добавить{% endif %}</button>
+            <button class="cancelButton"><a href="{% url 'employee_list' %}" class="btn btn-secondary">Отмена</a></button>
+        </form>
+    </div>
+</body>
+</html>

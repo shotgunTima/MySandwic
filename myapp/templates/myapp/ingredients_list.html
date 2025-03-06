@@ -7,6 +7,7 @@
     <title>Ингредиенты</title>
     <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
     <style>
+
         .sandwich-table-container {
             width: 80%;
             margin: 50px auto;
@@ -86,6 +87,17 @@
         .add-btn:hover {
             background-color: #FFEEE3;
         }
+
+        .filter-container {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .filter-container select {
+            padding: 8px;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -105,42 +117,99 @@
 
     <main class="main-content">
         <div class="container">
+            <div class="filter-container">
+    <label for="product-filter">Выберите продукт:</label>
+                <select id="product-filter">
+
+    {% for product in products %}
+        <option value="{{ product.productid }}"
+            {% if product.productid|stringformat:"s" == request.GET.product|stringformat:"s" %}selected{% endif %}>
+            {{ product.name }}
+
+        </option>
+    {% endfor %}
+
+</select>
+<button class="add-btn">
+    <a id="add-ingredient-btn" href="{% url 'ingredient_create' 0 %}" data-url="{% url 'ingredient_create' 0 %}" title="Добавить ингредиент">➕</a>
+</button>
+
+
+
+
+</div>
+
+<script>
+
+
+    document.getElementById("product-filter").addEventListener("change", function() {
+        let productId = this.value;
+        let url = "{% url 'ingredients_list' %}";
+        if (productId) {
+            url += "?product=" + productId;
+        }
+        window.location.href = url;
+    });
+
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let productFilter = document.getElementById("product-filter");
+        let addIngredientBtn = document.getElementById("add-ingredient-btn");
+
+        if (productFilter && addIngredientBtn) {
+            let selectedProduct = productFilter.value;
+            addIngredientBtn.href = addIngredientBtn.dataset.url.replace("0", selectedProduct);
+        }
+    });
+
+
+    document.getElementById("add-ingredient-btn").addEventListener("click", function(event) {
+        event.preventDefault();
+        let productId = document.getElementById("product-filter").value;
+        if (productId) {
+            window.location.href = `{% url 'ingredient_create' 0 %}`.replace("0", productId);
+        } else {
+            alert("Выберите продукт перед добавлением ингредиента!");
+        }
+    });
+</script>
             <h5 class="titleTbl">Ингредиенты</h5>
+
+
+
             <div class="table-container">
                 <div class="sandwich-table-container">
-
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Продукт</th>
+
                                 <th>Сырьё</th>
                                 <th>Количество</th>
                                 <th>Действия</th>
                             </tr>
                         </thead>
                         <tbody>
-    {% for product, ingredient_list in grouped_ingredients.items %}
-        {% for ingredient in ingredient_list %}
-            <tr>
-                {% if forloop.first %}
-                    <td rowspan="{{ ingredient_list|length }}">{{ product.name }}</td>
-                {% endif %}
-                <td>{{ ingredient.rawmaterialid.name }}</td>
-                <td>{{ ingredient.quantity }}</td>
-                <td>
-                    <a href="{% url 'ingredient_update' ingredient.ingredientid %}" class="btn edit-btn" title="Редактировать">✏️</a>
-                    <a href="{% url 'ingredient_delete' ingredient.ingredientid %}" class="btn delete-btn" title="Удалить">🗑️</a>
-                </td>
-            </tr>
-        {% endfor %}
-    {% empty %}
-        <tr>
-            <td colspan="4">Нет данных</td>
-        </tr>
-    {% endfor %}
-</tbody>
+                            {% for product, ingredient_list in grouped_ingredients.items %}
+                                {% for ingredient in ingredient_list %}
+                                    <tr>
 
+                                        <td>{{ ingredient.rawmaterialid.name }}</td>
+                                        <td>{{ ingredient.quantity }}</td>
+                                        <td>
+                                            <a href="{% url 'ingredient_update' ingredient.ingredientid %}" class="btn edit-btn" title="Редактировать">✏️</a>
+                                            <a href="{% url 'ingredient_delete' ingredient.ingredientid %}" class="btn delete-btn" title="Удалить">🗑️</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4">Нет данных</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
                     </table>
+                </div>
                 </div>
             </div>
         </div>
@@ -148,5 +217,16 @@
     <footer>
         <p>&copy; 2025 MySandwich. Все права защищены.</p>
     </footer>
+
+    <script>
+        document.getElementById("product-filter").addEventListener("change", function() {
+            let productId = this.value;
+            let url = "{% url 'ingredients_list' %}";
+            if (productId) {
+                url += "?product=" + productId;
+            }
+            window.location.href = url;
+        });
+    </script>
 </body>
 </html>

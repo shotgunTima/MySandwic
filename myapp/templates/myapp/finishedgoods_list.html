@@ -117,10 +117,9 @@
 
                                 <th>Название</th>
                                 <th>Единица измерения</th>
-                                <th>Цена за единицу</th>
                                 <th>Количество</th>
+                                <th>Цена</th>
                                 <th>Общая сумма</th>
-                                <th>Ингредиенты</th>
                                 <th>Действия</th>
                             </tr>
                         </thead>
@@ -130,10 +129,10 @@
 
                                 <td>{{ product.name }}</td>
                                 <td>{{ product.unitid.unitname }}</td>
-                                <td>{{ product.unit_price }}</td>
                                 <td>{{ product.quantity }}</td>
+                                <td>{{ product.unit_price }}</td>
                                 <td>{{ product.totalamount }}</td>
-                                <td><a href="{% url 'product_ingredients' product.productid %}" title="Посмотреть ингредиенты">👁️</a></td>
+
                                 <td>
                                     <a href="{% url 'finished_goods_update' product.productid %}" class="btn edit-btn" title="Редактировать">✏️</a>
                                     <a href="{% url 'finished_goods_delete' product.productid %}" class="btn delete-btn" title="Удалить">🗑️</a>
