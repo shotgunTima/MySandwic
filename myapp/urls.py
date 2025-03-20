@@ -32,10 +32,17 @@ urlpatterns = [
     #
     path('purchase/', purchase_raw_material, name='purchase_raw_materials'),
 
+    #
+    path('purchase/history/', purchase_history, name='purchase_history'),
+
+
     path('employees/', employee_list, name='employee_list'),  # List employees
     path('employees/create/', employee_create, name='employee_create'),  # Create employee
     path('employees/<int:pk>/edit/', employee_update, name='employee_update'),  # Update employee
     path('employees/<int:pk>/delete/', employee_delete, name='employee_delete'),  # Delete employee
 
-    path('budget/', budget_edit, name='budget_edit'),
+    path('budget/', budget_list, name='budget_list'),
+    path('budget/new/', budget_create, name='budget_create'),
+    path('budget/<int:pk>/edit/', budget_update, name='budget_update'),
+    path('budget/<int:pk>/delete/', budget_delete, name='budget_delete'),
 ]

@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История закупок</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
+
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo">MySandwich</a>
+            <ul>
+                <li><a href="{% url 'finishedgoods_list' %}">Готовая продукция</a></li>
+                <li><a href="{% url 'rawmaterials_list' %}">Сырьё</a></li>
+                <li><a href="{% url 'ingredients_list' %}">Ингредиенты</a></li>
+                <li><a href="{% url 'units_list' %}">Единицы измерения</a></li>
+                <li><a href="{% url 'budget_list' %}">Бюджет</a></li>
+                <li><a href="{% url 'purchase_raw_materials' %}">Закупки</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <h1>История закупок</h1>
+
+        {% if purchases %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Дата закупки</th>
+                        <th>Сырьё</th>
+                        <th>Количество</th>
+                        <th>Общая сумма</th>
+                        <th>Ответственный</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for purchase in purchases %}
+                        <tr>
+                            <td>{{ purchase.purchasedate }}</td>
+                            <td>{{ purchase.rawmaterialid.name }}</td>
+                            <td>{{ purchase.quantity }}</td>
+                            <td>{{ purchase.totalamount }}</td>
+                            <td>{{ purchase.employeeid.fullname }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>История закупок пока пуста.</p>
+        {% endif %}
+    </div>
+    <button class="cancelButton"><a href="{% url 'rawmaterials_list' %}" class="cancelButton">Назад</a></button>
+    <footer>
+        <p>&copy; 2025 MySandwich. Все права защищены.</p>
+    </footer>
+</body>
+</html>

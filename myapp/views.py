@@ -197,47 +197,60 @@ def product_ingredients(request, product_id):
     ingredients = Ingredients.objects.filter(productid=product)
     return render(request, 'myapp/product_ingredients.html', {'product': product, 'ingredients': ingredients})
 
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from .models import Rawmaterialpurchases, Rawmaterials, Budget
-from .forms import RawmaterialPurchaseForm
+from .models import Rawmaterialpurchases, Rawmaterials, Employees, Budget
+from .forms import Rawmaterialpurchases
+
+# views.py
+from django.shortcuts import redirect
+from django.db import transaction
+from .models import Rawmaterialpurchases,  Budget
+from .forms import Rawmaterialpurchases
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Rawmaterials, Employees, Budget, Rawmaterialpurchases
+from .forms import RawMaterialPurchaseForm
 
 def purchase_raw_material(request):
-    budget = get_object_or_404(Budget, pk=1)  # Assuming there is only one budget
+    rawmaterials = Rawmaterials.objects.all()
+    employees = Employees.objects.all()
+    budget = Budget.objects.first()
+    form = RawMaterialPurchaseForm(request.POST or None)
 
-    if request.method == 'POST':
-        form = RawmaterialPurchaseForm(request.POST)
-        if form.is_valid():
-            purchase = form.save(commit=False)
-            raw_material = purchase.rawmaterialid
+    if request.method == "POST" and form.is_valid():
+        purchase = form.save(commit=False)
+        rawmaterial = purchase.rawmaterialid
+        total_cost = purchase.totalamount
 
-            # Calculate total cost of the purchase
-            purchase.totalamount = purchase.quantity * raw_material.unit_price
+        if budget and budget.totalamount >= total_cost:
 
-            if budget.totalamount < purchase.totalamount:
-                messages.error(request, "Недостаточно средств в бюджете для этой закупки!")
-            else:
-                # Update the budget
-                budget.totalamount -= purchase.totalamount
-                budget.save()
+            budget.totalamount -= total_cost
+            budget.save()
 
-                # Update raw material quantity and total cost
-                raw_material.quantity += purchase.quantity
-                raw_material.totalamount += purchase.totalamount
-                raw_material.save()
 
-                # Save the purchase
-                purchase.save()
-                messages.success(request, "Закупка успешно добавлена!")
-                return redirect('rawmaterials_list')
-    else:
-        form = RawmaterialPurchaseForm()
+            rawmaterial.quantity += purchase.quantity
+            rawmaterial.totalamount += total_cost
+            rawmaterial.save()
 
-    return render(request, 'myapp/purchase_form.html', {'form': form, 'budget': budget})
+
+            purchase.save()
+            messages.success(request, "Закупка успешно проведена!")
+            return redirect('rawmaterials_list')
+        else:
+            messages.error(request, "Недостаточно средств в бюджете!")
+
+    return render(request, 'myapp/purchase_raw_material.html', {
+        'form': form,
+        'rawmaterials': rawmaterials,
+        'employees': employees
+    })
+
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Employees, Positions, Budget, Rawmaterials, Rawmaterialpurchases
-from .forms import EmployeeForm, RawmaterialPurchaseForm
+from .forms import EmployeeForm, Rawmaterialpurchases
 from django.db import transaction
 from django.contrib import messages
 
@@ -278,23 +291,42 @@ def employee_delete(request, pk):
     return render(request, 'myapp/employee_confirm_delete.html', {'employee': employee})
 
 
-def budget_edit(request):
-    try:
-        # Попытаться получить существующий бюджет, или создать новый
-        budget = Budget.objects.first()  # Получаем первый бюджет в базе
-        if not budget:
-            # Если бюджета нет, создаем новый
-            budget = Budget.objects.create(totalamount=0)
-    except Budget.DoesNotExist:
-        # Если нет записи о бюджете, создаем новую
-        budget = Budget.objects.create(totalamount=0)
 
-    if request.method == 'POST':
+def budget_list(request):
+    budgets = Budget.objects.all()
+    return render(request, 'myapp/budget_list.html', {'budgets': budgets})
+
+def budget_create(request):
+    if request.method == "POST":
+        form = BudgetForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('budget_list')
+    else:
+        form = BudgetForm()
+    return render(request, 'myapp/budget_form.html', {'form': form})
+
+def budget_update(request, pk):
+    budget = get_object_or_404(Budget, pk=pk)
+    if request.method == "POST":
         form = BudgetForm(request.POST, instance=budget)
         if form.is_valid():
             form.save()
-            return redirect('budget_edit')  # Перенаправление на страницу редактирования
+            return redirect('budget_list')
     else:
         form = BudgetForm(instance=budget)
-
     return render(request, 'myapp/budget_form.html', {'form': form})
+
+def budget_delete(request, pk):
+    budget = get_object_or_404(Budget, pk=pk)
+    if request.method == "POST":
+        budget.delete()
+        return redirect('budget_list')
+    return render(request, 'myapp/budget_confirm_delete.html', {'budget': budget})
+
+from django.shortcuts import render
+from .models import Rawmaterialpurchases
+
+def purchase_history(request):
+    purchases = Rawmaterialpurchases.objects.all()
+    return render(request, 'myapp/purchase_history.html', {'purchases': purchases})

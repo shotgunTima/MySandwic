@@ -1,39 +1,21 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Редактирование бюджета</title>
-    <link rel="stylesheet" href="/static/myapp/css/Style.css">
+    <title>{% if form.instance.pk %}Редактировать бюджет{% else %}Добавить бюджет{% endif %}</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="container">
-            <a href="/" class="logo">MySandwich</a>
-            <ul>
-                <li><a href="{% url 'finishedgoods_list' %}">Готовая продукция</a></li>
-                <li><a href="{% url 'rawmaterials_list' %}">Сырьё</a></li>
-                <li><a href="{% url 'ingredients_list' %}">Ингредиенты</a></li>
-                <li><a href="{% url 'units_list' %}">Единицы измерения</a></li>
-                <li><a href="{% url 'budget_edit' %}">Бюджет</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <div class="main-content">
-        <h1>Редактирование бюджета</h1>
-        <form method="post">
+    <div class="container">
+        <h1>{% if form.instance.pk %}Редактировать бюджет{% else %}Добавить бюджет{% endif %}</h1>
+        <form method="POST">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="totalamount">Сумма бюджета:</label>
-                {{ form.totalamount }}
-            </div>
-            <button type="submit">Сохранить</button>
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <button class="cancelButton"><a href="{% url 'budget_list' %}" class="btn btn-secondary">Назад</a></button>
         </form>
     </div>
-
-    <footer>
-        <p>&copy; 2025 MySandwich. Все права защищены.</p>
-    </footer>
 </body>
 </html>

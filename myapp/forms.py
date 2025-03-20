@@ -7,13 +7,16 @@ from django.utils import timezone
 from myapp.models import *
 
 class RawmaterialsForm(forms.ModelForm):
+    totalamount = forms.DecimalField(label="Общая сумма", initial=0)
+    quantity = forms.IntegerField(label="Количество", initial=0)
     class Meta:
         model = Rawmaterials
-        exclude = ['quantity', 'totalamount']
-        fields = ['name', 'unitid']
+        fields = ['name', 'quantity', 'totalamount', 'unitid']
         labels = {
-            'name': 'Название',
-            'unitid': 'Единица измерения',
+            'name': 'Название сырья',
+            'quantity': 'Количество',
+            'totalamount': 'Общая сумма',
+            'unitid': 'Единица измерения'
         }
 
 class FinishedgoodsForm(forms.ModelForm):
@@ -57,60 +60,30 @@ class IngredientsForm(forms.ModelForm):
 
 
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
+
 from .models import Rawmaterialpurchases, Rawmaterials, Employees, Budget
 from django import forms
+from django.utils.timezone import now
 
+class RawMaterialPurchaseForm(forms.ModelForm):
+    totalamount = forms.DecimalField(initial=0, label="Общая сумма")
+    quantity = forms.IntegerField(initial=0, label="Количество")
+    purchasedate = forms.DateField(
+        initial=now,
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label="Дата закупки"  # Добавлен label
+    )
 
-class RawmaterialPurchaseForm(forms.ModelForm):
     class Meta:
         model = Rawmaterialpurchases
         fields = ['rawmaterialid', 'quantity', 'totalamount', 'purchasedate', 'employeeid']
         labels = {
-
             'rawmaterialid': 'Сырьё',
-            'quantity': 'Количество',
-            'totalamount': 'Общая сумма',
-            'purchasedate': 'Дата закупки',
             'employeeid': 'Сотрудник'
         }
         widgets = {
             'purchasedate': forms.DateInput(attrs={'type': 'date'}),
         }
-
-
-def purchase_raw_material(request):
-    if request.method == "POST":
-        form = RawmaterialPurchaseForm(request.POST)
-        if form.is_valid():
-            purchase = form.save(commit=False)
-            raw_material = purchase.rawmaterialid
-            budget = Budget.objects.first()  # Предполагаем, что бюджет один
-
-            # Расчет стоимости
-            purchase.totalamount = purchase.quantity * raw_material.unit_price
-
-            if budget.totalamount < purchase.totalamount:
-                messages.error(request, "Недостаточно средств в бюджете для этой закупки!")
-            else:
-                # Обновляем бюджет
-                budget.totalamount -= purchase.totalamount
-                budget.save()
-
-                # Обновляем данные сырья
-                raw_material.quantity += purchase.quantity
-                raw_material.totalamount += purchase.totalamount
-                raw_material.save()
-
-                # Сохраняем закупку
-                purchase.save()
-                messages.success(request, "Закупка успешно добавлена!")
-                return redirect('raw_materials_list')
-    else:
-        form = RawmaterialPurchaseForm()
-
-    return render(request, 'myapp/purchase_form.html', {'form': form})
 
 from django import forms
 from .models import Employees
@@ -121,7 +94,6 @@ class EmployeeForm(forms.ModelForm):
         fields = ['fullname', 'salary', 'address', 'phone']
         labels = {
             'fullname': 'ФИО сотрудника',
-
             'salary': 'Зарплата',
             'address': 'Адрес',
             'phone': 'Номер телефона',
@@ -139,7 +111,7 @@ class EmployeeForm(forms.ModelForm):
 class BudgetForm(forms.ModelForm):
     class Meta:
         model = Budget
-        fields = ['totalamount']  # Только поле totalamount
+        fields = ['totalamount']
 
     widgets = {
         'totalamount': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'})

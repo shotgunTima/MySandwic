@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подтвердить удаление</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Подтверждение удаления</h1>
+        <p>Вы уверены, что хотите удалить запись бюджета с общей суммой {{ budget.totalamount }}?</p>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Удалить</button>
+            <button class="cancelButton"><a href="{% url 'budget_list' %}" class="btn btn-secondary">Отмена</a></button>
+        </form>
+    </div>
+</body>
+</html>

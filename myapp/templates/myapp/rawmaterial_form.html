@@ -12,7 +12,19 @@
         <h1>{% if rawmaterial %}Редактировать сырьё{% else %}Добавить сырьё{% endif %}</h1>
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+
+            <label for="{{ form.name.id_for_label }}">Название сырья:</label>
+            {{ form.name }}
+
+            <label for="{{ form.quantity.id_for_label }}">Количество:</label>
+            {{ form.quantity }}
+
+            <label for="{{ form.totalamount.id_for_label }}">Общая сумма:</label>
+            {{ form.totalamount }}
+
+             <label for="{{ form.unitid.id_for_label }}">Едининца измерения:</label>
+            {{ form.unitid }}
+
             {% if rawmaterial %}
             <button type="submit" class="btn submit-btn">Сохранить изменения</button>
             {% else %}

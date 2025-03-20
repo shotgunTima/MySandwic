@@ -15,6 +15,7 @@
                 <li><a href="{% url 'rawmaterials_list' %}">Сырьё</a></li>
                 <li><a href="{% url 'ingredients_list' %}">Ингредиенты</a></li>
                 <li><a href="{% url 'units_list' %}">Единицы измерения</a></li>
+                <li><a href="{% url 'budget_list' %}">Бюджет</a></li>
             </ul>
         </div>
     </nav>
@@ -31,34 +32,33 @@
         {% endif %}
 
         <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="rawmaterialid">Выберите сырьё:</label>
-                <select name="rawmaterialid" id="rawmaterialid">
-                    {% for rawmaterial in rawmaterials %}
-                        <option value="{{ rawmaterial.pk }}">{{ rawmaterial.name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="quantity">Количество:</label>
-                <input type="number" name="quantity" id="quantity" required>
-            </div>
-            <div class="form-group">
-                <label for="purchasedate">Дата закупки:</label>
-                <input type="date" name="purchasedate" id="purchasedate" required>
-            </div>
-            <div class="form-group">
-                <label for="employeeid">Сотрудник:</label>
-                <select name="employeeid" id="employeeid">
-                    {% for employee in employees %}
-                        <option value="{{ employee.pk }}">{{ employee.fullname }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+    {% csrf_token %}
 
-            <button type="submit">Закупить</button>
-        </form>
+    <label for="rawmaterialid">Сырьё:</label>
+    <select name="rawmaterialid" id="rawmaterialid">
+        {% for rawmaterial in rawmaterials %}
+            <option value="{{ rawmaterial.pk }}">{{ rawmaterial.name }}</option>
+        {% empty %}
+            <option disabled>Нет доступного сырья</option>
+        {% endfor %}
+    </select>
+
+    <label for="employeeid">Сотрудник:</label>
+    <select name="employeeid" id="employeeid">
+        {% for employee in employees %}
+            <option value="{{ employee.pk }}">{{ employee.fullname }}</option>
+        {% empty %}
+            <option disabled>Нет доступных сотрудников</option>
+        {% endfor %}
+    </select>
+    {{ form.totalamount.label_tag }} {{ form.totalamount }}
+    {{ form.quantity.label_tag }} {{ form.quantity }}
+    {{ form.purchasedate.label_tag }} {{ form.purchasedate }}
+
+    <button type="submit">Закупить</button>
+            <button class="cancelButton"><a href="{% url 'rawmaterials_list' %}" class="cancelButton">Отмена</a></button>
+</form>
+
     </div>
 
     <footer>
