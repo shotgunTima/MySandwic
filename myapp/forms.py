@@ -17,8 +17,12 @@ class RawmaterialsForm(forms.ModelForm):
             'unitid': 'Единица измерения'
         }
         widgets = {
-            'quantity': forms.NumberInput(attrs={'step': '0.01'}),
-            'totalamount': forms.NumberInput(attrs={'step': '0.01'}),
+            'quantity': forms.NumberInput(attrs={
+                'step': 'any'  # <-- убирает ограничение на шаг (ключ!)
+            }),
+            'totalamount': forms.NumberInput(attrs={
+                'step': 'any'  # <-- это тоже важно
+            }),
         }
 
 
@@ -127,9 +131,21 @@ from .models import Productproduction
 class ProductProductionForm(forms.ModelForm):
     class Meta:
         model = Productproduction
-        fields = ['productid', 'quantity', 'employeeid']
+        fields = ['productid', 'quantity', 'productiondate', 'employeeid']
         labels = {
             'productid': 'Продукт',
             'quantity': 'Количество',
+            'productiondate': 'Дата производства',
             'employeeid': 'Ответственный сотрудник'
         }
+        widgets = {
+            'productiondate': forms.DateInput(attrs={
+                'type': 'date'
+            })
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Устанавливаем сегодняшнюю дату по умолчанию
+        if not self.instance.pk:
+            self.fields['productiondate'].initial = now().date()
