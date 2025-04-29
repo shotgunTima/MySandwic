@@ -7,7 +7,6 @@
     <title>Ингредиенты</title>
     <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
     <style>
-
         .sandwich-table-container {
             width: 80%;
             margin: 50px auto;
@@ -16,50 +15,44 @@
             padding-bottom: 100px;
         }
 
-        .sandwich-table-container::before {
+        .sandwich-table-container::before,
+        .sandwich-table-container::after {
             content: "";
-            background-image: url("{% static 'myapp/img/sandwichTop.png' %}");
+            position: absolute;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            position: absolute;
+            width: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .sandwich-table-container::before {
+            background-image: url("{% static 'myapp/img/sandwichTop.png' %}");
             top: 42px;
+            height: 130px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100%;
-            height: 130px;
-            z-index: 3;
-            pointer-events: none;
         }
 
         .sandwich-table-container::after {
-            content: "";
             background-image: url("{% static 'myapp/img/sandwichBottom.png' %}");
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            position: absolute;
             bottom: 74px;
+            height: 40px;
             left: 50%;
             transform: translateX(-50%);
-            width: 100%;
-            height: 40px;
-            z-index: 3;
-            pointer-events: none;
         }
 
         .table {
             width: 100%;
-            border: 3px solid rgba(40, 40, 39, 1);
-            background-color: rgba(40, 40, 39, 1);
-            position: relative;
-            z-index: 2;
+            border: 3px solid #282827;
+            background-color: #282827;
             border-radius: 12px;
             overflow: hidden;
-            margin-top:55px;
+            margin-top: 55px;
         }
 
-        .table td, .table th {
+        .table th, .table td {
             background-color: #fff;
             padding: 20px;
             text-align: center;
@@ -70,29 +63,22 @@
             color: #6d4c41;
         }
 
-        .add-btn-container {
+        .add-btn-container, .filter-container {
             display: flex;
             justify-content: flex-end;
             margin-bottom: 10px;
         }
 
         .add-btn {
-            background-color: #FFFFFF;
+            background-color: #fff;
             padding: 10px 15px;
             border-radius: 8px;
             font-size: 18px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
         }
 
-        .add-btn:hover {
-            background-color: #FFEEE3;
-        }
-
-        .filter-container {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: flex-end;
-        }
+        .add-btn:hover { background-color: #ffeee3; }
 
         .filter-container select {
             padding: 8px;
@@ -105,7 +91,7 @@
         <nav class="navbar">
             <div class="container">
                 <a href="/" class="logo">MySandwich</a>
-               <ul>
+                <ul>
                     <li><a href="{% url 'finishedgoods_list' %}">Готовая продукция</a></li>
                     <li><a href="{% url 'rawmaterials_list' %}">Сырьё</a></li>
                     <li><a href="{% url 'ingredients_list' %}">Ингредиенты</a></li>
@@ -120,101 +106,60 @@
         <div class="container">
             <div class="filter-container">
     <label for="product-filter">Выберите продукт:</label>
-                <select id="product-filter">
-
-    {% for product in products %}
-        <option value="{{ product.productid }}"
-            {% if product.productid|stringformat:"s" == request.GET.product|stringformat:"s" %}selected{% endif %}>
-            {{ product.name }}
-
-        </option>
-    {% endfor %}
-
-</select>
-<button class="add-btn">
-    <a id="add-ingredient-btn" href="{% url 'ingredient_create' 0 %}" data-url="{% url 'ingredient_create' 0 %}" title="Добавить ингредиент">➕</a>
-</button>
-
-
-
-
+    <select id="product-filter">
+        <option value="" selected disabled>...</option>
+        {% for product in products %}
+            <option value="{{ product.productid }}"
+                {% if product.productid|stringformat:"s" == request.GET.product|stringformat:"s" %}selected{% endif %}>
+                {{ product.name }}
+            </option>
+        {% endfor %}
+    </select>
+    <a id="add-ingredient-btn" class="add-btn" href="{% url 'ingredient_create' 0 %}" data-url="{% url 'ingredient_create' 0 %}">➕</a>
 </div>
 
-<script>
-
-
-    document.getElementById("product-filter").addEventListener("change", function() {
-        let productId = this.value;
-        let url = "{% url 'ingredients_list' %}";
-        if (productId) {
-            url += "?product=" + productId;
-        }
-        window.location.href = url;
-    });
-
-
-
-    document.addEventListener("DOMContentLoaded", function() {
-        let productFilter = document.getElementById("product-filter");
-        let addIngredientBtn = document.getElementById("add-ingredient-btn");
-
-        if (productFilter && addIngredientBtn) {
-            let selectedProduct = productFilter.value;
-            addIngredientBtn.href = addIngredientBtn.dataset.url.replace("0", selectedProduct);
-        }
-    });
-
-
-    document.getElementById("add-ingredient-btn").addEventListener("click", function(event) {
-        event.preventDefault();
-        let productId = document.getElementById("product-filter").value;
-        if (productId) {
-            window.location.href = `{% url 'ingredient_create' 0 %}`.replace("0", productId);
-        } else {
-            alert("Выберите продукт перед добавлением ингредиента!");
-        }
-    });
-</script>
             <h5 class="titleTbl">Ингредиенты</h5>
-
-
 
             <div class="table-container">
                 <div class="sandwich-table-container">
                     <table class="table">
                         <thead>
                             <tr>
-
                                 <th>Сырьё</th>
                                 <th>Количество</th>
                                 <th>Действия</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for product, ingredient_list in grouped_ingredients.items %}
-                                {% for ingredient in ingredient_list %}
+                            {% if selected_product %}
+                                {% for product, ingredient_list in grouped_ingredients.items %}
+                                    {% for ingredient in ingredient_list %}
+                                        <tr>
+                                            <td>{{ ingredient.rawmaterialid.name }}</td>
+                                            <td>{{ ingredient.quantity }}</td>
+                                            <td>
+                                                <a href="{% url 'ingredient_update' ingredient.ingredientid %}" class="btn edit-btn">✏️</a>
+                                                <a href="{% url 'ingredient_delete' ingredient.ingredientid %}" class="btn delete-btn">🗑️</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% empty %}
                                     <tr>
-
-                                        <td>{{ ingredient.rawmaterialid.name }}</td>
-                                        <td>{{ ingredient.quantity }}</td>
-                                        <td>
-                                            <a href="{% url 'ingredient_update' ingredient.ingredientid %}" class="btn edit-btn" title="Редактировать">✏️</a>
-                                            <a href="{% url 'ingredient_delete' ingredient.ingredientid %}" class="btn delete-btn" title="Удалить">🗑️</a>
-                                        </td>
+                                        <td colspan="3">Нет ингредиентов для выбранного продукта</td>
                                     </tr>
                                 {% endfor %}
-                            {% empty %}
+                            {% else %}
                                 <tr>
-                                    <td colspan="4">Нет данных</td>
+                                    <td colspan="3">Выберите продукт, чтобы увидеть ингредиенты</td>
                                 </tr>
-                            {% endfor %}
+                            {% endif %}
                         </tbody>
                     </table>
-                </div>
                 </div>
             </div>
         </div>
     </main>
+
     <footer>
         <p>&copy; 2025 MySandwich. Все права защищены.</p>
     </footer>
@@ -227,6 +172,16 @@
                 url += "?product=" + productId;
             }
             window.location.href = url;
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let productFilter = document.getElementById("product-filter");
+            let addIngredientBtn = document.getElementById("add-ingredient-btn");
+
+            if (productFilter && addIngredientBtn) {
+                let selectedProduct = productFilter.value;
+                addIngredientBtn.href = addIngredientBtn.dataset.url.replace("0", selectedProduct);
+            }
         });
     </script>
 </body>

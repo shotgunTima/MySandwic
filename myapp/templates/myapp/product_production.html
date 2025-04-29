@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Производство продукции</title>
+    <link rel="stylesheet" href="/static/myapp/css/Style.css">
+
+    <style>
+        body{
+        margin-left:100px;
+        margin-right:100px;
+        }
+    </style>
+
+</head>
+<body>
+    {% block content %}
+<h2>Производство продукции</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Произвести</button>
+    <button class="cancelButton"><a href="{% url 'finishedgoods_list' %}">Назад</a></button>
+</form>
+
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+{% endblock %}
+
+
+</body>
+</html>

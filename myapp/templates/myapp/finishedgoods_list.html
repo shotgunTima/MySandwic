@@ -80,6 +80,7 @@
             border-radius: 8px;
             font-size: 18px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-left:10px;
         }
 
         .add-btn:hover {
@@ -111,6 +112,8 @@
                 <div class="sandwich-table-container">
                     <div class="add-btn-container">
                         <a href="{% url 'finished_goods_create' %}" class="btn add-btn" title="Добавить">➕</a>
+                        <a href="{% url 'product_production' %}" class="btn add-btn" title="Производство">🥄</a>
+                        <a href="{% url 'production_history' %}" class="btn add-btn" title="История производтсва">🕐</a>
                     </div>
                     <table class="table">
                         <thead>
@@ -119,7 +122,6 @@
                                 <th>Название</th>
                                 <th>Единица измерения</th>
                                 <th>Количество</th>
-                                <th>Цена</th>
                                 <th>Общая сумма</th>
                                 <th>Действия</th>
                             </tr>
@@ -131,7 +133,6 @@
                                 <td>{{ product.name }}</td>
                                 <td>{{ product.unitid.unitname }}</td>
                                 <td>{{ product.quantity }}</td>
-                                <td>{{ product.unit_price }}</td>
                                 <td>{{ product.totalamount }}</td>
 
                                 <td>

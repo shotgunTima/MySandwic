@@ -7,8 +7,6 @@ from django.utils import timezone
 from myapp.models import *
 
 class RawmaterialsForm(forms.ModelForm):
-    totalamount = forms.DecimalField(label="Общая сумма", initial=0)
-    quantity = forms.IntegerField(label="Количество", initial=0)
     class Meta:
         model = Rawmaterials
         fields = ['name', 'quantity', 'totalamount', 'unitid']
@@ -18,15 +16,21 @@ class RawmaterialsForm(forms.ModelForm):
             'totalamount': 'Общая сумма',
             'unitid': 'Единица измерения'
         }
+        widgets = {
+            'quantity': forms.NumberInput(attrs={'step': '0.01'}),
+            'totalamount': forms.NumberInput(attrs={'step': '0.01'}),
+        }
+
 
 class FinishedgoodsForm(forms.ModelForm):
     class Meta:
         model = Finishedgoods
-        exclude = ['quantity', 'totalamount']
-        fields = ['name', 'unitid']
+        fields = ['name', 'unitid', 'quantity', 'totalamount']
         labels = {
             'name': 'Название',
             'unitid': 'Единица измерения',
+            'quantity': 'Количество',
+            'totalamount': 'Общая сумма',
         }
 
 class UnitsForm(forms.ModelForm):
@@ -116,3 +120,16 @@ class BudgetForm(forms.ModelForm):
     widgets = {
         'totalamount': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'})
     }
+
+from django import forms
+from .models import Productproduction
+
+class ProductProductionForm(forms.ModelForm):
+    class Meta:
+        model = Productproduction
+        fields = ['productid', 'quantity', 'employeeid']
+        labels = {
+            'productid': 'Продукт',
+            'quantity': 'Количество',
+            'employeeid': 'Ответственный сотрудник'
+        }

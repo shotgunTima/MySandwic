@@ -4,17 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Добавить продукт</title>
+    <title>{% if product %}Редактировать продукт{% else %}Добавить продукт{% endif %}</title>
     <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
 </head>
 <body>
     <div class="container">
-        <h1>Добавить новый продукт</h1>
+        <h1>{% if product %}Редактировать продукт{% else %}{% endif %}</h1>
+
         <form method="POST">
             {% csrf_token %}
             {{ form.as_p }}
+
             <button type="submit" class="btn btn-primary">Сохранить</button>
             <button class="cancelButton"><a href="{% url 'finishedgoods_list' %}" class="btn btn-secondary">Назад</a></button>
+
+            {% if product %}
+                <button class="btn btn-danger" onclick="return confirm('Вы уверены, что хотите удалить этот продукт?');">
+                    <a href="{% url 'delete_product' product.id %}" style="color: white; text-decoration: none;">Удалить</a>
+                </button>
+            {% endif %}
         </form>
     </div>
 </body>

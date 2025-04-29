@@ -34,6 +34,10 @@ urlpatterns = [
 
     #
     path('purchase/history/', purchase_history, name='purchase_history'),
+    path('production/history/', production_history, name='production_history'),
+
+    #
+    path('production/', product_production, name='product_production'),
 
 
     path('employees/', employee_list, name='employee_list'),  # List employees

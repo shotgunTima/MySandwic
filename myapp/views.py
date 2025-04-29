@@ -121,19 +121,24 @@ from django.shortcuts import render
 from itertools import groupby
 from .models import Ingredients, Finishedgoods
 
-
 def ingredient_list(request):
     selected_product_id = request.GET.get("product")
 
-    ingredients = Ingredients.objects.select_related("productid", "rawmaterialid").order_by("productid")
+    # Загружаем только те ингредиенты, у которых есть выбранный продукт
+    ingredients = Ingredients.objects.select_related("productid", "rawmaterialid")
 
     if selected_product_id:
         ingredients = ingredients.filter(productid=selected_product_id)
+    else:
+        # Если продукт не выбран, изначально ничего не показываем
+        ingredients = Ingredients.objects.none()
 
+    # Группировка ингредиентов по продукту
     grouped_ingredients = {}
     for product, items in groupby(ingredients, key=lambda x: x.productid):
         grouped_ingredients[product] = list(items)
 
+    # Загружаем список продуктов для фильтра
     products = Finishedgoods.objects.all()
 
     return render(request, 'myapp/ingredients_list.html', {
@@ -141,7 +146,6 @@ def ingredient_list(request):
         'products': products,
         'selected_product': selected_product_id
     })
-
 
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -330,3 +334,125 @@ from .models import Rawmaterialpurchases
 def purchase_history(request):
     purchases = Rawmaterialpurchases.objects.all()
     return render(request, 'myapp/purchase_history.html', {'purchases': purchases})
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from django.utils import timezone
+from .models import Finishedgoods, Ingredients, Rawmaterials, Productproduction
+from .forms import ProductProductionForm
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
+from django.utils import timezone
+from django.db import transaction
+from .models import Finishedgoods, Ingredients, Rawmaterials, Productproduction
+from .forms import ProductProductionForm
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.utils import timezone
+from django.db import transaction
+from .models import Finishedgoods, Ingredients, Rawmaterials, Productproduction
+from .forms import ProductProductionForm
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.db import transaction
+from django.utils import timezone
+from decimal import Decimal, ROUND_HALF_UP  # Для точного округления
+
+from .models import Finishedgoods, Ingredients, Productproduction
+from .forms import ProductProductionForm
+
+from django.db import transaction
+from django.utils import timezone
+from django.contrib import messages
+from django.shortcuts import redirect, render
+from .models import Ingredients, Productproduction, Finishedgoods
+from .forms import ProductProductionForm  # Убедитесь, что импортируете правильную форму
+
+def product_production(request):
+    if request.method == "POST":
+        form = ProductProductionForm(request.POST)
+        if form.is_valid():
+            product = form.cleaned_data['productid']
+            quantity_to_produce = float(form.cleaned_data['quantity'])
+            employee = form.cleaned_data['employeeid']
+
+            # Получаем все ингредиенты для данного продукта
+            ingredients = Ingredients.objects.filter(productid=product)
+
+            # Проверяем, хватит ли сырья
+            insufficient_materials = []
+            for ingredient in ingredients:
+                required_quantity = ingredient.quantity * quantity_to_produce
+                raw_material = ingredient.rawmaterialid
+                if raw_material.quantity < required_quantity:
+                    insufficient_materials.append(f"{raw_material.name} (нужно {required_quantity}, есть {raw_material.quantity})")
+
+            if insufficient_materials:
+                messages.error(request, "Недостаточно сырья: " + ", ".join(insufficient_materials))
+                return render(request, "myapp/product_production.html", {"form": form})  # Передаем заполненную форму обратно
+
+            total_cost = 0.0  # Общая себестоимость произведённых единиц продукции
+
+            with transaction.atomic():
+
+                for ingredient in ingredients:
+                    required_quantity = ingredient.quantity * quantity_to_produce
+                    raw_material = ingredient.rawmaterialid
+
+
+                    if raw_material.quantity > 0:
+                        cost_of_used_material = (raw_material.totalamount / raw_material.quantity) * required_quantity
+                    else:
+                        cost_of_used_material = 0.0
+
+                    total_cost += cost_of_used_material  # Учитываем себестоимость
+
+                    # Обновляем количество сырья
+                    raw_material.quantity -= required_quantity
+
+                    # Пересчитываем общую стоимость сырья
+                    if raw_material.quantity > 0:
+                        raw_material.totalamount -= cost_of_used_material
+                    else:
+                        raw_material.totalamount = 0.0  # Если сырья не осталось, стоимость тоже 0
+
+                    raw_material.save()
+
+                # Себестоимость одной единицы продукции
+                cost_price_per_unit = total_cost / quantity_to_produce
+
+                # Создаём запись о производстве
+                Productproduction.objects.create(
+                    productid=product,
+                    quantity=int(quantity_to_produce),
+                    productiondate=timezone.now().date(),
+                    employeeid=employee
+                )
+
+                # Обновляем количество готовой продукции
+                product.quantity += int(quantity_to_produce)
+
+                # Корректно пересчитываем `totalamount`
+                product.totalamount += total_cost
+
+                product.save()
+
+                messages.success(request, "Продукция успешно произведена!")
+
+            return redirect("finishedgoods_list")
+    else:
+        form = ProductProductionForm()
+
+    return render(request, "myapp/product_production.html", {"form": form})
+
+
+from django.shortcuts import render
+from .models import Productproduction
+
+def production_history(request):
+    productions = Productproduction.objects.all().order_by('-productiondate')  # Сортировка по дате (новые сверху)
+    return render(request, 'myapp/production_history.html', {'productions': productions})

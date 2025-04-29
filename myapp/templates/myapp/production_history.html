@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История производства</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="logo">MySandwich</a>
+            <ul>
+                <li><a href="{% url 'finishedgoods_list' %}">Готовая продукция</a></li>
+                <li><a href="{% url 'rawmaterials_list' %}">Сырьё</a></li>
+                <li><a href="{% url 'ingredients_list' %}">Ингредиенты</a></li>
+                <li><a href="{% url 'units_list' %}">Единицы измерения</a></li>
+                <li><a href="{% url 'budget_list' %}">Бюджет</a></li>
+                <li><a href="{% url 'purchase_raw_materials' %}">Закупки</a></li>
+                <li><a href="{% url 'production_history' %}">История производства</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <h1>История производства</h1>
+
+        {% if productions %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Дата производства</th>
+                        <th>Продукт</th>
+                        <th>Количество</th>
+                        <th>Ответственный</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for production in productions %}
+                        <tr>
+                            <td>{{ production.productiondate }}</td>
+                            <td>{{ production.productid.name }}</td>
+                            <td>{{ production.quantity }}</td>
+                            <td>{{ production.employeeid.fullname }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>История производства пока пуста.</p>
+        {% endif %}
+    </div>
+
+    <button class="cancelButton">
+        <a href="{% url 'finishedgoods_list' %}" class="cancelButton">Назад</a>
+    </button>
+
+    <footer>
+        <p>&copy; 2025 MySandwich. Все права защищены.</p>
+    </footer>
+</body>
+</html>
