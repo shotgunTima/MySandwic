@@ -119,13 +119,15 @@ class EmployeeForm(forms.ModelForm):
 class BudgetForm(forms.ModelForm):
     class Meta:
         model = Budget
-        fields = ['totalamount']
+        fields = ['totalamount', 'sales_percentage']
+        widgets = {
+            'totalamount': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+            'sales_percentage': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'}),
+        }
 
-    widgets = {
-        'totalamount': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01'})
-    }
 
 from django import forms
+from django.utils.timezone import now
 from .models import Productproduction
 
 class ProductProductionForm(forms.ModelForm):
@@ -139,13 +141,26 @@ class ProductProductionForm(forms.ModelForm):
             'employeeid': 'Ответственный сотрудник'
         }
         widgets = {
-            'productiondate': forms.DateInput(attrs={
-                'type': 'date'
-            })
+            'productiondate': forms.DateInput(attrs={'type': 'date'}),
+            'quantity': forms.NumberInput(attrs={'min': 0}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Устанавливаем сегодняшнюю дату по умолчанию
+
         if not self.instance.pk:
             self.fields['productiondate'].initial = now().date()
+            self.fields['quantity'].initial = 0
+
+
+from django import forms
+from .models import Employees, Finishedgoods
+import datetime
+
+
+class ProductSaleForm(forms.Form):
+    product = forms.ModelChoiceField(queryset=Finishedgoods.objects.all(), label="Товар")
+    quantity = forms.FloatField(min_value=0.01, label="Количество")
+    employee = forms.ModelChoiceField(queryset=Employees.objects.all(), label="Сотрудник")
+    saledate = forms.DateField(initial=datetime.date.today, label="Дата продажи",
+                               widget=forms.SelectDateWidget)

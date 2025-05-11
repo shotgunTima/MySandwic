@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Продажа продукта</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/Style.css' %}">
+    <style>
+        body {
+            padding-left: 100px;
+            padding-right: 500px;
+        }
+
+        .messages {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .messages.error {
+            background-color: #fdd;
+            color: #a33;
+            border: 1px solid #a33;
+        }
+
+        .messages.success {
+            background-color: #dfd;
+            color: #393;
+            border: 1px solid #393;
+        }
+
+        .form-container {
+            margin-top: 20px;
+        }
+
+        .btn-submit {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+
+        .cancelButton a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .cancelButton {
+            background-color: #f44336;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .cancelButton:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Продажа продукта</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="messages {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if form.errors %}
+            <div class="messages error">
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-submit">Продать</button>
+            <button type="button" class="cancelButton">
+                <a href="{% url 'finishedgoods_list' %}" class="btn btn-secondary">Назад</a>
+            </button>
+        </form>
+    </div>
+</body>
+</html>

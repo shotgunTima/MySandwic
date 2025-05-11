@@ -5,6 +5,8 @@ from django.db import models
 class Budget(models.Model):
     budgetid = models.AutoField(db_column='BudgetID', primary_key=True)
     totalamount = models.FloatField(db_column='TotalAmount')
+    sales_revenue = models.FloatField(db_column='SalesRevenue', default=0)
+    sales_percentage = models.FloatField(db_column='SalesPercentage', default=0.2)  # например, 20%
 
     class Meta:
         db_table = 'Budget'

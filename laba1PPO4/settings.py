@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'laba1PPO4.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'MySandwic',
+        'NAME': 'MySandwich',
         'USER':'postgres',
         'PASSWORD':'kykyblyat1',
         'HOST':'localhost',

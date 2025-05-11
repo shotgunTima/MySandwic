@@ -39,6 +39,8 @@ urlpatterns = [
     #
     path('production/', product_production, name='product_production'),
 
+    # urls.py
+    path('sell-product/', sell_product_view, name='sell_product'),
 
     path('employees/', employee_list, name='employee_list'),  # List employees
     path('employees/create/', employee_create, name='employee_create'),  # Create employee

@@ -3,8 +3,9 @@ from .models import Budget, Employees, Finishedgoods, Ingredients, Positions, Pr
 
 # Настройка отображения в админке для моделей
 class BudgetAdmin(admin.ModelAdmin):
-    list_display = ('budgetid', 'totalamount')
-    search_fields = ('budgetid',)
+    list_display = ('budgetid', 'totalamount', 'sales_revenue', 'sales_percentage')  # Список полей для отображения
+    search_fields = ('budgetid', 'sales_percentage')  # Поля для поиска
+    list_filter = ('sales_percentage',)
 
 class EmployeesAdmin(admin.ModelAdmin):
     list_display = ('employeeid', 'fullname', 'get_positionname', 'salary', 'phone')  # используем метод get_positionname

@@ -112,6 +112,7 @@
                             <tr>
 
                                 <th>Сумма</th>
+                                <th>Наценка</th>
                                 <th>Действиe</th>
                             </tr>
                         </thead>
@@ -120,9 +121,9 @@
                             <tr>
 
                                 <td>{{ budget.totalamount }}</td>
+                                <td>{{ budget.sales_percentage }}</td>
                                 <td>
                                     <a href="{% url 'budget_update' budget.budgetid %}" class="btn edit-btn" title="Редактировать">✏️</a>
-
                                 </td>
                             </tr>
                             {% empty %}

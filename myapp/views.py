@@ -387,7 +387,9 @@ def product_production(request):
             insufficient_materials = []
             for ingredient in ingredients:
                 required_quantity = ingredient.quantity * quantity_to_produce
+
                 raw_material = ingredient.rawmaterialid
+
                 if raw_material.quantity < required_quantity:
                     insufficient_materials.append(f"{raw_material.name} (нужно {required_quantity}, есть {raw_material.quantity})")
 
@@ -450,9 +452,55 @@ def product_production(request):
     return render(request, "myapp/product_production.html", {"form": form})
 
 
+
+
 from django.shortcuts import render
 from .models import Productproduction
 
 def production_history(request):
     productions = Productproduction.objects.all().order_by('-productiondate')  # Сортировка по дате (новые сверху)
     return render(request, 'myapp/production_history.html', {'productions': productions})
+
+
+from django.shortcuts import render, redirect
+from django.db import connection
+from django.contrib import messages
+from .forms import ProductSaleForm
+
+
+def sell_product_view(request):
+    from .models import Finishedgoods  # если не импортировано
+
+    product_id = request.GET.get('product_id')
+
+    if request.method == 'POST':
+        form = ProductSaleForm(request.POST)
+        if form.is_valid():
+            product = form.cleaned_data['product']
+            quantity = form.cleaned_data['quantity']
+            employee = form.cleaned_data['employee']
+            saledate = form.cleaned_data['saledate']
+
+            try:
+                with connection.cursor() as cursor:
+                    cursor.execute("CALL sale_product(%s, %s, %s, %s)", [
+                        product.productid,
+                        quantity,
+                        saledate,
+                        employee.employeeid
+                    ])
+
+                messages.success(request, 'Продажа успешно выполнена.')
+                return redirect('sell_product')
+            except Exception as e:
+                messages.error(request, f'Ошибка при продаже: {e}')
+    else:
+        initial_data = {}
+        if product_id:
+            try:
+                initial_data['product'] = Finishedgoods.objects.get(productid=product_id)
+            except Finishedgoods.DoesNotExist:
+                messages.error(request, 'Товар не найден.')
+        form = ProductSaleForm(initial=initial_data)
+
+    return render(request, 'myapp/sell_product.html', {'form': form})

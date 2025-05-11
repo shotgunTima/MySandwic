@@ -136,6 +136,7 @@
                                 <td>{{ product.totalamount }}</td>
 
                                 <td>
+                                    <a href="{% url 'sell_product' %}?product_id={{ product.productid }}" class="btn sell-btn" title="Продать">💲</a>
                                     <a href="{% url 'finished_goods_update' product.productid %}" class="btn edit-btn" title="Редактировать">✏️</a>
                                     <a href="{% url 'finished_goods_delete' product.productid %}" class="btn delete-btn" title="Удалить">🗑️</a>
                                 </td>
